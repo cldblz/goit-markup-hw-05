@@ -148,7 +148,7 @@ header .contact-link {
 
 .link.active::after {
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
 
   display: inline-block;
@@ -545,7 +545,8 @@ header .icon {
   border: 1px solid var(--icon-color);
   border-radius: 4px;
 
-  transition: color 250ms var(--timing-function);
+  transition: color 250ms var(--timing-function),
+    border 250ms var(--timing-function);
 }
 
 .clients .client-link:hover,
@@ -571,15 +572,15 @@ header .icon {
   background-color: var(--modal-overlay-color);
 
   opacity: 1;
-  transition: opacity 250ms var(--timing-function);
+  transition: opacity 250ms var(--timing-function),
+    visibility 250ms var(--timing-function);
 }
 
 .backdrop.is-hidden {
-  /* visibility: hidden; */
+  visibility: hidden;
   opacity: 0;
   pointer-events: none;
 }
-/* Если добавляю visibility: hidden, то пропадает анимация скрытия модального окна */
 
 .modal {
   position: absolute;
