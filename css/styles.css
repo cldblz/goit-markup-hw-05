@@ -610,7 +610,9 @@ header .icon {
 
   width: 30px;
   height: 30px;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   background-color: var(--primary-white);
   border: 1px solid var(--fourth-shadow-color);
