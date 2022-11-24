@@ -1,17 +1,3 @@
-/*
-Акцент #2196F3
-Текст #757575
-Текст 2 #212121
-Текст лого #000000
-Первичный белый #ffffff
-Вторичный белый #F5F4FA
-Текст контактов футера rgba(255, 255, 255, 0.6)
-Фон футера #2f303a
-
-font-family: 'Raleway', sans-serif;
-font-family: 'Roboto', sans-serif;
-*/
-
 :root {
   --primary-text-color: #757575;
   --secondary-text-color: #212121;
@@ -34,6 +20,11 @@ font-family: 'Roboto', sans-serif;
   --overlay-color: rgba(47, 48, 50, 0.4);
   --icon-color: #afb1b8;
   --icon-bg-color: rgba(255, 255, 255, 0.1);
+  --label-bg-color: rgba(47, 48, 50, 0.8);
+  --card-overlay-color: rgba(33, 150, 243, 0.9);
+  --modal-overlay-color: rgba(0, 0, 0, 0.2);
+
+  --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
@@ -145,10 +136,29 @@ header .contact-link {
   letter-spacing: 0.02em;
   line-height: 1.14;
   color: var(--secondary-text-color);
+
+  transition: color 250ms var(--timing-function);
 }
 
 .link.active {
+  position: relative;
+
   color: var(--accent-color);
+}
+
+.link.active::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  display: inline-block;
+  height: 4px;
+  width: 100%;
+
+  content: "";
+
+  background-color: var(--accent-color);
+  border-radius: 2px;
 }
 
 .nav .link:hover,
@@ -172,6 +182,8 @@ header .contact-link {
   letter-spacing: 0.02em;
   line-height: 1.14;
   color: var(--primary-text-color);
+
+  transition: color 250ms var(--timing-function);
 }
 
 header .icon {
@@ -210,6 +222,8 @@ header .icon {
   line-height: 1.71;
   color: var(--footer-address-color);
   text-decoration: none;
+
+  transition: color 250ms var(--timing-function);
 }
 
 .contact-link.address-link {
@@ -243,20 +257,20 @@ header .icon {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 44px;
   height: 44px;
 
   color: var(--primary-white);
-  background-color: var(--icon-bg-color);
 
+  background-color: var(--icon-bg-color);
   border-radius: 50%;
+
+  transition: background-color 250ms var(--timing-function);
 }
 
 .footer .social-link:hover,
 .footer .social-link:focus {
   background-color: var(--accent-color);
-  color: var(--primary-white);
 }
 
 .footer .social-links > .item:not(:last-child) {
@@ -396,6 +410,28 @@ header .icon {
   margin-right: 30px;
 }
 
+.directions-list .thumb {
+  position: relative;
+}
+
+.directions-list .label {
+  position: absolute;
+  bottom: 0;
+
+  width: 370px;
+  height: 70px;
+  padding: 27px 0 27px;
+
+  font-weight: 700;
+  line-height: 1.14;
+  text-align: center;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary-white);
+
+  background-color: var(--label-bg-color);
+}
+
 .directions-img {
   display: block;
 }
@@ -467,12 +503,14 @@ header .icon {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 44px;
   height: 44px;
 
   color: var(--icon-color);
   border-radius: 50%;
+
+  transition: background-color 250ms var(--timing-function),
+    color 250ms var(--timing-function);
 }
 
 .social-link:hover,
@@ -495,17 +533,10 @@ header .icon {
   margin-right: 30px;
 }
 
-.clients .client-link:hover,
-.clients .client-link:focus {
-  color: var(--accent-color);
-  border: 1px solid var(--accent-color);
-}
-
 .clients .client-link {
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 170px;
   height: 92px;
 
@@ -513,15 +544,85 @@ header .icon {
 
   border: 1px solid var(--icon-color);
   border-radius: 4px;
+
+  transition: color 250ms var(--timing-function);
+}
+
+.clients .client-link:hover,
+.clients .client-link:focus {
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
 }
 
 .clients .icon {
   --color1: currentColor;
 }
 
+/* Modal */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: var(--modal-overlay-color);
+
+  opacity: 1;
+  transition: opacity 250ms var(--timing-function);
+}
+
+.backdrop.is-hidden {
+  /* visibility: hidden; */
+  opacity: 0;
+  pointer-events: none;
+}
+/* Если добавляю visibility: hidden, то пропадает анимация скрытия модального окна */
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+
+  min-width: 528px;
+  min-height: 581px;
+
+  background-color: var(--primary-white);
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px var(--first-shadow-color),
+    0px 1px 1px var(--second-shadow-color),
+    0px 2px 1px var(--third-shadow-color);
+
+  transition: transform 250ms var(--timing-function);
+}
+
+.backdrop.is-hidden .modal {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.btn-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+
+  background-color: var(--primary-white);
+  border: 1px solid var(--fourth-shadow-color);
+  border-radius: 50%;
+}
+
+.close-icon {
+}
+
 /* PORTFOLIO */
 
-/* Buttons */
+/* Types */
 
 .portfolio-nav {
   margin-bottom: 50px;
@@ -536,6 +637,7 @@ header .icon {
 
 .btn-type {
   padding: 6px 22px;
+
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -548,6 +650,8 @@ header .icon {
   border-radius: 4px;
 
   cursor: pointer;
+  transition: background-color 250ms var(--timing-function),
+    color 250ms var(--timing-function), box-shadow 250ms var(--timing-function);
 }
 
 .btn-type.btn-all {
@@ -561,10 +665,6 @@ header .icon {
   color: var(--primary-white);
 
   background-color: var(--accent-color);
-}
-
-.btn-type:hover,
-.btn-type:focus {
   box-shadow: 0px 3px 1px var(--fourth-shadow-color),
     0px 1px 2px var(--fifth-shadow-color), 0px 2px 2px var(--first-shadow-color);
 }
@@ -578,8 +678,17 @@ header .icon {
 
 .portfolio-link {
   display: block;
+
   text-decoration: none;
   color: var(--primary-text-color);
+
+  transition: box-shadow 250ms var(--timing-function);
+}
+
+.portfolio-list .thumb {
+  position: relative;
+
+  overflow: hidden;
 }
 
 .portfolio-img {
@@ -600,8 +709,8 @@ header .icon {
   width: calc((100% - 60px) / 3);
 }
 
-.portfolio-list .portfolio-link:hover,
-.portfolio-list .portfolio-link:focus {
+.portfolio-link:hover,
+.portfolio-link:focus {
   box-shadow: 0px 1px 1px var(--first-shadow-color),
     0px 4px 4px var(--sixth-shadow-color),
     1px 4px 6px var(--seventh-shadow-color);
@@ -628,4 +737,29 @@ header .icon {
   font-size: 16px;
   letter-spacing: 0.03em;
   line-height: 1.88;
+}
+
+.portfolio-overlay {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  padding: 63px 24px;
+
+  font-size: 18px;
+  line-height: 1.56;
+  letter-spacing: 0.03em;
+  color: var(--primary-white);
+
+  background-color: var(--card-overlay-color);
+  transform: translateY(0);
+
+  transition: transform 250ms var(--timing-function);
+}
+
+.portfolio-link:hover .portfolio-overlay,
+.portfolio-link:focus .portfolio-overlay {
+  transform: translateY(-100%);
 }
